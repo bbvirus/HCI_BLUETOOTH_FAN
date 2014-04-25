@@ -1,7 +1,7 @@
 #include <SoftwareSerial.h>
 
-int bluetoothTx = 2;  // TX-O pin of bluetooth mate, Arduino D2
-int bluetoothRx = 3;  // RX-I pin of bluetooth mate, Arduino D3
+int bluetoothTx = 2;
+int bluetoothRx = 3;
 
 SoftwareSerial bluetooth(bluetoothTx, bluetoothRx);
 int MOTOR = 9;
@@ -19,7 +19,7 @@ void setup()
   // 115200 can be too fast at times for NewSoftSerial to relay the data reliably
   bluetooth.begin(9600);  // Start bluetooth serial at 9600
 
-  pinMode(MOTOR, OUTPUT);
+  pinMode(MOTOR, OUTPUT);  // Set pinmode
   
   Serial.println("HI");
 }
@@ -30,19 +30,23 @@ void loop()
     char data = (char)bluetooth.read();
     Serial.print(data);
     
+    // High intensity
     if(data == 'h'){
       analogWrite(MOTOR, 255);
     }
     
-    if(data == 'm'){
+    // Normal intensity
+    if(data == 'n'){
       analogWrite(MOTOR, 170);
     }
-    
-    if(data == 'n'){
-      analogWrite(MOTOR, 120);
+
+    // Low intensity
+    if(data == 'l'){
+      analogWrite(MOTOR, 85);
     }
     
-    if(data == 'l'){
+    // Turn off
+    if(data == 'f'){
       analogWrite(MOTOR, 0);
     }
   }
